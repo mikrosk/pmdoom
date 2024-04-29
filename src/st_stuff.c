@@ -1426,7 +1426,11 @@ void ST_Init (void)
 
 void ST_DrawFps(int fps)
 {
-	int d,u;
+	int i,d,u;
+
+	for (i = 0; i < 6*st_coefy; i++) {
+		R_VideoErase(sysvideo.width-8*st_coefx, i, 8*st_coefx);
+	}
 
 	if (fps>99)
 		fps=99;
