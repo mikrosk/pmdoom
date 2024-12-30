@@ -163,6 +163,11 @@ M_ReadFile
 int		usemouse;
 int		usejoystick;
 
+extern int	wasd_key_up;
+extern int	wasd_key_down;
+extern int	wasd_key_left;
+extern int	wasd_key_right;
+
 extern int	key_right;
 extern int	key_left;
 extern int	key_up;
@@ -221,6 +226,11 @@ default_t	defaults[] =
     {"music_volume",&snd_MusicVolume, 8},
     {"show_messages",&showMessages, 1},
     
+    {"wasd_up",&wasd_key_up, 'w'},
+    {"wasd_down",&wasd_key_down, 's'},
+    {"wasd_strafeleft",&wasd_key_left, 'a'},
+    {"wasd_straferight",&wasd_key_right, 'd'},
+
     {"key_right",&key_right, KEY_RIGHTARROW},
     {"key_left",&key_left, KEY_LEFTARROW},
     {"key_up",&key_up, KEY_UPARROW},

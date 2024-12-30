@@ -139,6 +139,11 @@ byte*		savebuffer;
 // 
 // controls (have defaults) 
 // 
+int		wasd_key_up;
+int		wasd_key_down;
+int		wasd_key_left;
+int		wasd_key_right;
+
 int             key_right;
 int		key_left;
 
@@ -285,11 +290,15 @@ void G_BuildTiccmd (ticcmd_t* cmd)
 			cmd->angleturn -= (angleturn[tspeed] * joyxmove)/128; 
 	} 
  
-	if (gamekeydown[key_up]) {
+	if (gamekeydown[wasd_key_right])
+		side += sidemove[speed];
+	if (gamekeydown[wasd_key_left])
+		side -= sidemove[speed];
+	if (gamekeydown[wasd_key_up] || gamekeydown[key_up]) {
 		// fprintf(stderr, "up\n");
 		forward += forwardmove[speed]; 
 	}
-	if (gamekeydown[key_down]) {
+	if (gamekeydown[wasd_key_down] || gamekeydown[key_down]) {
 		// fprintf(stderr, "down\n");
 		forward -= forwardmove[speed]; 
 	}
