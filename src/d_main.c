@@ -101,6 +101,7 @@ boolean		singletics = false; // debug flag to cancel adaptiveness
 //extern  int	sfxVolume;
 //extern  int	musicVolume;
 
+extern int mouselook;
 extern  boolean	inhelpscreens;
 
 skill_t		startskill;
@@ -1079,6 +1080,11 @@ void D_DoomMain (void)
 
     printf ("M_LoadDefaults: Load system defaults.\n");
     M_LoadDefaults ();              // load before initing other systems
+
+    p=M_CheckParm ("-mouselook");
+    if (p) {
+		mouselook = 1;
+	}
 
     printf ("W_Init: Init WADfiles.\n");
     W_InitMultipleFiles (wadfiles);

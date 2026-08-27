@@ -139,6 +139,8 @@ byte*		savebuffer;
 // 
 // controls (have defaults) 
 // 
+int		mouselook;
+
 int		wasd_key_up;
 int		wasd_key_down;
 int		wasd_key_left;
@@ -371,11 +373,16 @@ void G_BuildTiccmd (ticcmd_t* cmd)
 		} 
 	} 
 
-	forward += mousey; 
-	if (strafe) 
-		side += mousex*2; 
-	else 
-	cmd->angleturn -= mousex*0x8; 
+	if (mouselook) {
+		/* Doom has no view pitch, so vertical motion is unused */
+		cmd->angleturn -= mousex*0x8;
+	} else {
+		forward += mousey;
+		if (strafe)
+			side += mousex*2;
+		else
+			cmd->angleturn -= mousex*0x8;
+	}
 
 	mousex = mousey = 0; 
 
