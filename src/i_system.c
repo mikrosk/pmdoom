@@ -155,6 +155,13 @@ void I_Init (void)
 	}
 }
 
+#if defined(__MINT__) && !defined(__mcoldfire__)
+/* TOS has no per-process FPU context, so the rounding mode we set below
+   would outlive the game. MiNT saves/restores it, plain TOS does not. */
+static long	saved_fpcr;
+static boolean	fpcr_changed = false;
+#endif
+
 static void I_InitFpu(void)
 {
 #if defined(__MINT__) && !defined(__mcoldfire__)
@@ -177,6 +184,18 @@ static void I_InitFpu(void)
 
 	if (cpu_cookie==60) {
 		if (((fpu_cookie>>16) & 0xfffe) == 16) {
+			__asm__ __volatile__ (
+					".chip	68060\n"
+				"	fmove%.l	fpcr,%0\n"
+#if defined(__mc68020__)
+				"	.chip	68020"
+#else
+				"	.chip	68000"
+#endif
+				: "=d"(saved_fpcr)
+			);
+			fpcr_changed = true;
+
 			__asm__ __volatile__ (
 					".chip	68060\n"
 				"	fmove%.l	fpcr,d0\n"
@@ -204,6 +223,22 @@ static void I_InitFpu(void)
 
 static void I_Shutdown(void)
 {
+#if defined(__MINT__) && !defined(__mcoldfire__)
+	if (fpcr_changed) {
+		__asm__ __volatile__ (
+				".chip	68060\n"
+			"	fmove%.l	%0,fpcr\n"
+#if defined(__mc68020__)
+			"	.chip	68020"
+#else
+			"	.chip	68000"
+#endif
+			: /* no return value */
+			: "d"(saved_fpcr)
+			: "cc"
+		);
+	}
+#endif
 	if (i_CDMusic) {
 		I_CDMusShutdown();
 	}
