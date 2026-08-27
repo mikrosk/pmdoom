@@ -101,6 +101,7 @@ boolean		singletics = false; // debug flag to cancel adaptiveness
 //extern  int	sfxVolume;
 //extern  int	musicVolume;
 
+extern int mouselook;
 extern  boolean	inhelpscreens;
 
 skill_t		startskill;
@@ -828,6 +829,11 @@ void D_DoomMain (void)
     if (p) {
 		sysvideo.resize = true;
 	}
+	p=M_CheckParm ("-mouselook");
+	if (p) {
+		mouselook = 1;
+	}
+
 	p=M_CheckParm ("-flat");
     if (p) {
 		sysvideo.textured_spans = false;
